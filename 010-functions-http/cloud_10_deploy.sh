@@ -11,4 +11,4 @@ gcloud functions deploy ${FUNCTION_NAME} \
     --source=${SCRIPT_DIR}/code \
     --entry-point=gcp_call \
     --trigger-http \
-    --no-allow-unauthenticated
+    --allow-unauthenticated

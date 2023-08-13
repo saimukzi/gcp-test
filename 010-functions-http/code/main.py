@@ -7,7 +7,10 @@ def main(method, args, data, **kwargs):
     now = time.time()
     print(json.dumps({
         'severity': 'DEBUG',
-        'message': f'now={now}, method={method}, args={args}, data={data}'
+        'message': f'now={now}, method={method}, args={args}, data={data}',
+        'logging.googleapis.com/labels': {
+            'function_name': '010-functions-http'
+        }
     }))
     return "Hello World!"
 
