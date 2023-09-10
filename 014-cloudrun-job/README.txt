@@ -8,9 +8,16 @@ gcloud artifacts repositories create \
   --repository-format=docker \
   --location=${GCP_REGION}
 
+gcloud artifacts repositories list \
+  --location=${GCP_REGION}
+
 gcloud builds submit \
   --pack image=${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/test-014-${TTIMESTAMP}-repo/test-014-${TTIMESTAMP}-image \
   code
+
+gcloud artifacts files list \
+  --location=${GCP_REGION} \
+  --repository=test-014-${TTIMESTAMP}-repo
 
 gcloud run jobs create test-014-${TTIMESTAMP}-job \
   --image ${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/test-014-${TTIMESTAMP}-repo/test-014-${TTIMESTAMP}-image \
@@ -18,8 +25,37 @@ gcloud run jobs create test-014-${TTIMESTAMP}-job \
   --region ${GCP_REGION} \
   --project=${GCP_PROJECT}
 
+gcloud run jobs list \
+  --region ${GCP_REGION} \
+  --project=${GCP_PROJECT}
+
 gcloud run jobs execute test-014-${TTIMESTAMP}-job
 
+gcloud run jobs executions list \
+  --job=test-014-${TTIMESTAMP}-job \
+  --region ${GCP_REGION} \
+  --project=${GCP_PROJECT}
+
+gcloud scheduler jobs create http \
+  test-014-${TTIMESTAMP}-scheduler \
+  --schedule="* * * * *" \
+  --uri="https://${GCP_REGION}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${GCP_PROJECT}/jobs/test-014-${TTIMESTAMP}-job:run" \
+  --oauth-service-account-email=665333157420-compute@developer.gserviceaccount.com \
+  --oauth-token-scope=https://www.googleapis.com/auth/cloud-platform \
+  --location ${GCP_REGION} \
+  --project=${GCP_PROJECT}
+
+gcloud scheduler jobs list \
+  --location=${GCP_REGION} \
+  --project=${GCP_PROJECT}
+
+gcloud scheduler jobs delete \
+  test-014-${TTIMESTAMP}-scheduler \
+  --location=${GCP_REGION} \
+  --project=${GCP_PROJECT} \
+  --quiet
+
+# may fail because there is job running
 gcloud run jobs delete test-014-${TTIMESTAMP}-job \
   --region ${GCP_REGION} \
   --project=${GCP_PROJECT} \
