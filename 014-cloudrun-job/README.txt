@@ -19,9 +19,9 @@ gcloud artifacts files list \
   --location=${GCP_REGION} \
   --repository=test-014-${TTIMESTAMP}-repo
 
-gcloud run jobs create test-014-${TTIMESTAMP}-job \
+gcloud run jobs deploy test-014-${TTIMESTAMP}-job \
   --image ${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/test-014-${TTIMESTAMP}-repo/test-014-${TTIMESTAMP}-image \
-  --max-retries 5 \
+  --max-retries 1 \
   --region ${GCP_REGION} \
   --project=${GCP_PROJECT}
 
