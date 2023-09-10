@@ -1,3 +1,6 @@
+# https://console.cloud.google.com/artifacts
+# https://console.cloud.google.com/run
+
 TTIMESTAMP=$(date +%s)
 
 gcloud artifacts repositories create \
