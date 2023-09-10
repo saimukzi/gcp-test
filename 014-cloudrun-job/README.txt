@@ -40,7 +40,7 @@ gcloud scheduler jobs create http \
   test-014-${TTIMESTAMP}-scheduler \
   --schedule="* * * * *" \
   --uri="https://${GCP_REGION}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${GCP_PROJECT}/jobs/test-014-${TTIMESTAMP}-job:run" \
-  --oauth-service-account-email=665333157420-compute@developer.gserviceaccount.com \
+  --oauth-service-account-email=${GCP_SERVICE_ACCOUNT_EMAIL} \
   --oauth-token-scope=https://www.googleapis.com/auth/cloud-platform \
   --location ${GCP_REGION} \
   --project=${GCP_PROJECT}
